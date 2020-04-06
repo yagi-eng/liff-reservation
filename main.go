@@ -6,15 +6,14 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 )
 
 func main() {
-	port, _ := strconv.Atoi(os.Args[1])
-	fmt.Printf("Starting server at Port %d", port)
+	port := os.Getenv("PORT")
+	fmt.Printf("Starting server at Port %s", port)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
 	http.HandleFunc("/", handler)
-	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
